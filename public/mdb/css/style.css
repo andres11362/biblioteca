@@ -1,0 +1,12 @@
+/* Your custom styles */
+.actions a {
+    margin: auto !important;
+}
+
+.actions {
+    display: flex;
+}
+
+.center {
+    margin: 0 auto;
+}
