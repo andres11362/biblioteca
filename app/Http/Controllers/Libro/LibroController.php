@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Libro;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\ResponseController;
 use App\Libro;
+use Illuminate\Support\Facades\Storage;
+use File;
 
-class LibroController extends Controller
+class LibroController extends ResponseController
 {
     /**
      * Display a listing of the resource.
@@ -42,6 +45,7 @@ class LibroController extends Controller
             'genero'    => 'required',
             'editorial' => 'required',
             'autor'     => 'required',
+            'img'       => 'required|mimes:jpeg,jpg,png|max:1000',
             'cantidad'  => 'numeric|required|between:1,10'
         ];
 
@@ -49,7 +53,21 @@ class LibroController extends Controller
 
         $data = $request->all();
 
+        $imagen = $request->file('img');
+
+        $data['path'] = $imagen->guessExtension();
+
+        $nombre = $request->nombre. '.' . $data['path'];
+
+        $data['img'] = $nombre;
+
         Libro::create($data);
+
+        Storage::disk('images')->put($nombre, \File($imagen));
+
+        $texto = 'Libro';
+
+        $this->success( $texto.' insertado correctamente');
 
         return redirect('/libros');
     }
@@ -95,14 +113,27 @@ class LibroController extends Controller
             'genero'    => 'required',
             'editorial' => 'required',
             'autor'     => 'required',
-            'cantidad'  => 'numeric|required|between:1,10'
+            'cantidad'  => 'numeric|required|between:1,10',
+            'img'       => 'mimes:jpeg,jpg|max:1000',
         ];
 
         $this->validate($request, $rules);
 
-        if($request->has('nombre'))
+        $ruta = 'public/imagenes/';
+
+        if($request->hasFile('img'))
         {
-            $libro->nombre = $request->nombre; 
+            $imagen = $request->file('img');
+            $path = $imagen->guessExtension();
+            Storage::delete($ruta.$libro->img);
+            Storage::disk('images')->put($libro->img, \File($imagen));
+        }
+
+        if($request->has('nombre') && ($request->nombre != $libro->nombre))
+        {
+            Storage::move($ruta.$libro->img, $ruta.$request->nombre.'.'.$libro->path);
+            $libro->nombre = $request->nombre;
+            $libro->img    = $request->nombre.'.'.$libro->path; 
         }
 
         if($request->has('genero'))
@@ -127,6 +158,10 @@ class LibroController extends Controller
 
         $libro->save();
 
+        $texto = 'Libro';
+
+        $this->success( $texto.' actualizado correctamente');
+
         return redirect('/libros');
     }
 
@@ -140,7 +175,15 @@ class LibroController extends Controller
     {
         $libro = Libro::findOrFail($id);
 
+        $ruta = 'public/imagenes/';
+
+        Storage::delete($ruta.$libro->img);
+
         $libro->delete();
+
+        $texto = 'Libro';
+
+        $this->success( $texto.' eliminado correctamente');
 
         return redirect('/libros');
     }

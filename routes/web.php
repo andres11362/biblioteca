@@ -15,14 +15,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/libros', 'LibroController');
-Route::resource('/users', 'UserController', ['except' => ['edit', 'update', 'show', 'destroy']]);
+Route::resource('/libros', 'Libro\LibroController');
+Route::resource('/users', 'Usuario\UserController', ['except' => ['edit', 'update', 'show', 'destroy']]);
 
-Route::put('/changeRole', 'UserController@changeRole')->name('users.role');
+Route::put('/changeRole', 'Usuario\UserController@changeRole')->name('users.role');
 
 //Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'Home\HomeController@index')->name('home');
 
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('login');
 $this->post('login', 'Auth\LoginController@login');
@@ -37,16 +37,16 @@ $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 //$this->get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 //$this->post('register', 'Auth\RegisterController@register');
 
-Route::get('user/edit', 'ProfileController@editData')->name('user.editData');
-Route::put('user/update/{id}', 'ProfileController@updateData')->name('user.updateData');
+Route::get('user/edit', 'Usuario\ProfileController@editData')->name('user.editData');
+Route::put('user/update/{id}', 'Usuario\ProfileController@updateData')->name('user.updateData');
+Route::get('user/editPassword', 'Usuario\ProfileController@editPassword')->name('user.editPassword');
+Route::put('user/updatePassword', 'Usuario\ProfileController@updatePassword')->name('user.updatePassword');
 
-Route::get('user/editPassword', 'ProfileController@editPassword')->name('user.editPassword');
-Route::put('user/updatePassword', 'ProfileController@updatePassword')->name('user.updatePassword');
+Route::get('prestamos', 'Prestamo\PrestamoController@index')->name('prestamos.index');
 
-Route::get('prestamos', 'PrestamoController@index')->name('prestamos.index');
+Route::get('prestamo', 'Prestamo\TransactionController@index')->name('transaction.index');
+Route::get('prestamo/create', 'Prestamo\TransactionController@create')->name('transaction.create');
+Route::post('prestamo/store', 'Prestamo\TransactionController@store')->name('transaction.store');
 
-Route::get('prestamo', 'TransactionController@index')->name('transaction.index');
-Route::get('prestamo/create', 'TransactionController@create')->name('transaction.create');
-
-Route::post('prestamo/store', 'TransactionController@store')->name('transaction.store');
-
+Route::put('/prestamoState', 'Prestamo\PrestamoController@prestamo')->name('prestamos.prestamo');
+Route::put('/devolucionState', 'Prestamo\PrestamoController@devolucion')->name('prestamos.devolucion');

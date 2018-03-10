@@ -20,7 +20,7 @@ class CreatePrestamosTable extends Migration
             $table->unsignedInteger('id_libro');
             $table->dateTime('fecha_inicio');
             $table->dateTime('fecha_fin');
-            $table->char('estado',1)->default(Prestamo::ESTADO_PRESTAMO);
+            $table->char('estado',1)->default(Prestamo::ESTADO_SOLICITADO);
             $table->foreign('id_user')->references('id')->on('users');
             $table->foreign('id_libro')->references('id')->on('libros');
             //$table->timestamps();

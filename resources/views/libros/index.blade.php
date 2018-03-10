@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    @include('alerts.messages')
     <div class="page-header">
         <h1>Inventario de libros</h1>
     </div>
@@ -13,6 +14,7 @@
                 <th>Editorial</th>
                 <th>Autor</th>
                 <th>Existencias</th>
+                <th>Imagen</th>
                 <th>Acciones</th>
             </tr> 
         </thead>
@@ -33,6 +35,9 @@
                     </td>
                     <td>
                         {{ $libro->cantidad }}
+                    </td>
+                    <td>
+                       <img src="{{ asset('storage/imagenes/'.$libro->img) }}" width="25px" height="50px" />
                     </td>
                     <td class="actions">
                         <a href="{{ route('libros.edit', ['id' => $libro->id ]) }}" class="btn btn-sm btn-default">Editar</a>

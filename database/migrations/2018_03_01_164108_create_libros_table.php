@@ -19,6 +19,8 @@ class CreateLibrosTable extends Migration
             $table->string('genero');
             $table->string('editorial');
             $table->string('autor');
+            $table->string('img');
+            $table->string('path');
             $table->unsignedInteger('cantidad');            
         });
     }

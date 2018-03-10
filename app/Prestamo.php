@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 class Prestamo extends Model
 {
+    const ESTADO_SOLICITADO = "0";
     const ESTADO_PRESTAMO = "1";
     const ESTADO_DEVOLUCION = "2";
     const ESTADO_MULTA = "3";

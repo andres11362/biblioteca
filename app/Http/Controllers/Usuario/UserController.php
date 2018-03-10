@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Usuario;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\ResponseController;
 use App\User;
 use App\Mail\UserRegistration;
 use Illuminate\Support\Facades\Mail;
 
-class UserController extends Controller
+class UserController extends ResponseController
 {
     /**
      * Display a listing of the resource.

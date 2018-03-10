@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Home;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\ResponseController;
+use Carbon\Carbon;
 
-class HomeController extends Controller
+class HomeController extends ResponseController
 {
     /**
      * Create a new controller instance.
@@ -13,7 +15,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
     }
 
     /**
